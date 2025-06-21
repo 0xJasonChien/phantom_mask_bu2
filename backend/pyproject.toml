@@ -18,6 +18,11 @@ dependencies = [
     "pydantic-settings>=2.9.1",
 ]
 
+[tool.ruff]
+exclude = [
+    "migrations",
+]
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["E501", "D", "PLC0415"]

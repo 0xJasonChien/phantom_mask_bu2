@@ -134,3 +134,7 @@ USE_TZ = settings.USE_TZ
 
 STATIC_ROOT = Path(BASE_DIR) / 'static'
 STATIC_URL = '/static/'
+
+
+# default User model
+AUTH_USER_MODEL = 'account.User'
