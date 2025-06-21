@@ -1,0 +1,6 @@
+# directories and files
+.DS_Store
+.env
+
+# Python cache
+__pycache__/
