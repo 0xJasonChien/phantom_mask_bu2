@@ -82,7 +82,7 @@ class UserLoginView(TokenObtainPairView):
         return super().post(request, *args, **kwargs)
 
 
-class CapChaRetrieveView(RetrieveAPIView):
+class CaptchaHashKeyRetrieveView(RetrieveAPIView):
     permission_classes = ()
     serializer_class = CaptchaRetrieveSerializer
 
