@@ -15,7 +15,11 @@ class PurchaseHistory(BaseModel):
         null=True,
         on_delete=models.SET_NULL,
     )
-    mask_name = models.ForeignKey('pharmacy.Mask', null=True, on_delete=models.SET_NULL)
+
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=50)
+    count_per_pack = models.PositiveIntegerField()
+
     amount = models.FloatField()
     quantity = models.PositiveIntegerField()
     purchase_date = models.DateTimeField()
