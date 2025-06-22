@@ -16,20 +16,14 @@ class OpeningHour(BaseModel):
     end_time = models.TimeField()
 
 
-class Mask(BaseModel):
+class Inventory(BaseModel):
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
     count_per_pack = models.PositiveIntegerField()
 
-    class Meta:
-        unique_together = ('name', 'color', 'count_per_pack')
-
-
-class Inventory(BaseModel):
-    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
-    mask_name = models.ForeignKey(Mask, on_delete=models.PROTECT)
     price = models.FloatField()
     stock_quantity = models.PositiveIntegerField()
 
     class Meta:
-        unique_together = ('pharmacy', 'mask_name')
+        unique_together = ('pharmacy', 'name', 'color', 'count_per_pack')
