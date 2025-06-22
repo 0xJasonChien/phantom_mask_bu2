@@ -1,0 +1,16 @@
+{
+    "version": "0.1.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/src/manage.py",
+            "args": [
+                "runserver",
+            ],
+            "django": true,
+            "envFile": "${workspaceFolder}/backend/src/.env"
+        },
+    ]
+}

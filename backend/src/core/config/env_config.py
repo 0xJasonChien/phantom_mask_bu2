@@ -19,6 +19,8 @@ class SystemSettings(BaseSettings):
     USE_I18N: bool = True
     USE_TZ: bool = True
 
+    BATCH_SIZE: int = 100
+
 
 class Settings(SystemSettings, DatabaseSettings):
     model_config = SettingsConfigDict(env_file='.env', extra='ignore')
