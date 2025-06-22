@@ -35,6 +35,7 @@ CUSTOM_APPS = [
     'account',
     'pharmacy',
     'member',
+    'etl',
 ]
 
 INSTALLED_APPS = [
