@@ -28,6 +28,7 @@ from .config.env_config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
+    path('pharmacy/', include('pharmacy.urls')),
 ]
 
 
