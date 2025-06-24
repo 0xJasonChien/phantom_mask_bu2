@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from core.config.base import BASE_DIR
 from member.models import Member, PurchaseHistory
-from pharmacy.models import Pharmacy
+from pharmacy.models import Inventory, Pharmacy
 
 
 class Command(BaseCommand):
@@ -36,12 +36,16 @@ class Command(BaseCommand):
             naive_datetime = datetime.fromisoformat(item['transactionDatetime'])
             aware_datetime = timezone.make_aware(naive_datetime)
 
-            purchase_history = PurchaseHistory(
+            inventory = Inventory.objects.get_or_create(
                 pharmacy=pharmacy_name_mapping[item['pharmacyName']],
-                member=member,
                 name=name,
                 color=color,
                 count_per_pack=int(count_per_pack),
+            )[0].create_snapshot()
+
+            purchase_history = PurchaseHistory(
+                member=member,
+                inventory=inventory,
                 amount=item['transactionAmount'],
                 quantity=item['transactionQuantity'],
                 purchase_date=aware_datetime,

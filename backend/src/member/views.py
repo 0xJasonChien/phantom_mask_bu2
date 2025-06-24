@@ -1,6 +1,6 @@
 from typing import Self
 
-from django.db.models import QuerySet, Sum
+from django.db.models import F, QuerySet, Sum
 from django.http import HttpRequest, HttpResponse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -12,14 +12,14 @@ from member.apps import MemberConfig
 
 from .models import Member, PurchaseHistory
 from .serializers import (
-    MultiplePurchaseHistoryCreateSerializer,
+    PurchaseHistoryCreateSerializer,
     PurchaseHistoryListSerializer,
     PurchaseRankingSerializer,
 )
 
 
 class PurchaseHistoryCreateView(CreateAPIView):
-    serializer_class = MultiplePurchaseHistoryCreateSerializer
+    serializer_class = PurchaseHistoryCreateSerializer
     queryset = Member.objects.all()
 
     def create(
@@ -32,27 +32,25 @@ class PurchaseHistoryCreateView(CreateAPIView):
         serializer = self.get_serializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
 
-        created_purchase_history_qs = PurchaseHistory.bulk_create_for_member(
+        created_purchase_history = PurchaseHistory.bulk_create_for_member(
             member,
             serializer,
         )
         response_serializer = PurchaseHistoryListSerializer(
-            created_purchase_history_qs,
+            created_purchase_history,
             many=True,
         )
 
-        headers = self.get_success_headers(response_serializer.data)
         return Response(
             response_serializer.data,
             status=HTTP_201_CREATED,
-            headers=headers,
         )
 
     @swagger_auto_schema(
         operation_id='新增購買紀錄',
-        request_body=MultiplePurchaseHistoryCreateSerializer(many=True),
+        request_body=PurchaseHistoryCreateSerializer(many=True),
         responses={
-            HTTP_201_CREATED: MultiplePurchaseHistoryCreateSerializer,
+            HTTP_201_CREATED: PurchaseHistoryCreateSerializer,
         },
         tags=(MemberConfig.name,),
     )
@@ -76,7 +74,10 @@ class PurchaseRankingListView(ListAPIView):
             .get_queryset()
             .select_related('member')
             .values('member__uuid', 'member__name')
-            .annotate(accumulated_amount=Sum('amount'))
+            .annotate(
+                accumulated_amount=Sum('amount'),
+                cash_balance=F('member__cash_balance'),
+            )
             .order_by('-accumulated_amount')
         )
 
