@@ -19,9 +19,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from .config.env_config import settings
 
@@ -29,28 +27,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('pharmacy/', include('pharmacy.urls')),
+    path('member/', include('member.urls')),
 ]
 
 
 if settings.DEBUG:
-    api_info = openapi.Info(
-        title='Phantom Mask API',
-        default_version='v1',
-    )
-    SchemaView = get_schema_view(
-        info=api_info,
-        public=True,
-        url=settings.HOST_URL,
-        permission_classes=[permissions.AllowAny],
-    )
-
     urlpatterns += [
         path(
             'rest_framework/',
             include('rest_framework.urls'),
         ),
+        path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
         path(
             'swagger/',
-            SchemaView.with_ui('swagger'),
+            SpectacularSwaggerView.as_view(url_name='schema'),
         ),
     ]

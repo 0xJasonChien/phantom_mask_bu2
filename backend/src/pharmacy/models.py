@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from django.db import IntegrityError, models
 from rest_framework.exceptions import ValidationError
@@ -27,17 +27,16 @@ class OpeningHour(BaseModel):
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
     weekday = models.CharField(choices=WeekDay.choices, max_length=4)
     start_time = models.TimeField()
+
     end_time = models.TimeField()
 
 
 class Inventory(BaseModel):
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
-
-    # Spec. for Mask
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
-    count_per_pack = models.PositiveIntegerField()
 
+    count_per_pack = models.PositiveIntegerField()
     price = models.FloatField()
     stock_quantity = models.PositiveIntegerField()
 
@@ -108,5 +107,28 @@ class Inventory(BaseModel):
 
         return to_update_inventory
 
+    def create_snapshot(self: Self) -> InventorySnapshot:
+        return InventorySnapshot.objects.create(
+            pharmacy=self.pharmacy,
+            inventory=self,
+            pharmacy_name=self.pharmacy.name,
+            inventory_name=self.name,
+            color=self.color,
+            count_per_pack=self.count_per_pack,
+            price=self.price,
+        )
+
     class Meta:
         unique_together = ('pharmacy', 'name', 'color', 'count_per_pack')
+
+
+class InventorySnapshot(BaseModel):
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.SET_NULL, null=True)
+    inventory = models.ForeignKey(Inventory, on_delete=models.SET_NULL, null=True)
+
+    pharmacy_name = models.CharField(max_length=50)
+    inventory_name = models.CharField(max_length=50)
+    color = models.CharField(max_length=50)
+
+    count_per_pack = models.PositiveIntegerField()
+    price = models.FloatField()

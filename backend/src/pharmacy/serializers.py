@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from pharmacy.models import Inventory, OpeningHour
+from pharmacy.models import Inventory, OpeningHour, Pharmacy
+
+
+class PharmacySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pharmacy
+        fields = ('name', 'cash_balance')
 
 
 class OpeningHourListSerializer(serializers.ModelSerializer):
