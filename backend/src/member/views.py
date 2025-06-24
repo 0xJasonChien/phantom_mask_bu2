@@ -2,13 +2,10 @@ from typing import Self
 
 from django.db.models import F, QuerySet, Sum
 from django.http import HttpRequest, HttpResponse
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
-
-from member.apps import MemberConfig
+from rest_framework.status import HTTP_201_CREATED
 
 from .models import Member, PurchaseHistory
 from .serializers import (
@@ -46,13 +43,12 @@ class PurchaseHistoryCreateView(CreateAPIView):
             status=HTTP_201_CREATED,
         )
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='新增購買紀錄',
-        request_body=PurchaseHistoryCreateSerializer(many=True),
+        request=PurchaseHistoryCreateSerializer(many=True),
         responses={
-            HTTP_201_CREATED: PurchaseHistoryCreateSerializer,
+            HTTP_201_CREATED: PurchaseHistoryListSerializer(many=True),
         },
-        tags=(MemberConfig.name,),
     )
     def post(
         self: Self,
@@ -85,20 +81,17 @@ class PurchaseRankingListView(ListAPIView):
             return queryset[: int(top)]
         return queryset
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得購買排行榜',
-        responses={
-            HTTP_200_OK: PurchaseRankingSerializer(many=True),
-        },
-        manual_parameters=[
-            openapi.Parameter(
-                'top',
-                openapi.IN_QUERY,
+        parameters=[
+            OpenApiParameter(
+                name='top',
+                type=int,
+                location=OpenApiParameter.QUERY,
                 description='Get the top N buyers',
-                type=openapi.TYPE_INTEGER,
+                required=False,
             ),
         ],
-        tags=(MemberConfig.name,),
     )
     def get(
         self: Self,

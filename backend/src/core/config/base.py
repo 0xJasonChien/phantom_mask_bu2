@@ -48,9 +48,10 @@ INSTALLED_APPS = [
     'rest_framework',  # Django REST Framework
     'csp',  # add content security policy to header
     'corsheaders',  # Cross-Origin Resource Sharing (CORS) headers
-    'drf_yasg',  # swagger
+    'drf_spectacular',  # swagger
     'captcha',  # captcha for authentication
     'rest_framework_simplejwt',  # for JWT authentication
+    'django_filters',
     *CUSTOM_APPS,
 ]
 
@@ -102,6 +103,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Simple JWT settings
@@ -113,15 +115,13 @@ SIMPLE_JWT = {
 }
 
 # swagger settings
-SWAGGER_SETTINGS = {
-    'LOGIN_URL': 'rest_framework:login',
-    'LOGOUT_URL': 'rest_framework:logout',
-    'DEFAULT_INFO': 'core.urls.api_info',
-    'USE_SESSION_AUTH': False,
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Phantom Mask API',
+    'DESCRIPTION': 'API documentation',
+    'VERSION': '1.0.0',
 }
 
 # Database
-
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {

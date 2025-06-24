@@ -3,12 +3,13 @@ from typing import ClassVar, Self
 from django.db.models import Sum
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 from core.filters import FullTextSearchFilter
+from pharmacy.apps import PharmacyConfig
 from pharmacy.models import Inventory, OpeningHour, Pharmacy
 from pharmacy.serializers import (
     InventoryBulkCreateSerializer,
@@ -29,16 +30,14 @@ class PharmacyListView(ListAPIView):
     queryset = OpeningHour.objects.select_related('pharmacy').all()
     serializer_class = OpeningHourListSerializer
     filterset_fields: ClassVar = {
-        'weekday': ['in'],
+        'weekday': ['exact'],
         'start_time': ['gte', 'exact'],
         'end_time': ['lte', 'exact'],
     }
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得藥局列表',
-        responses={
-            HTTP_200_OK: OpeningHourListSerializer(many=True),
-        },
+        tags=(PharmacyConfig.name,),
     )
     def get(
         self: Self,
@@ -64,7 +63,7 @@ class InventoryPerPharmacyListView(ListAPIView):
     def get_queryset(self: Self) -> QuerySet:
         return super().get_queryset().filter(pharmacy_id=self.kwargs['uuid'])
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得藥局販售的口罩列表',
         responses={
             HTTP_200_OK: InventoryPerPharmacyListSerializer(many=True),
@@ -100,7 +99,7 @@ class InventoryCountView(ListAPIView):
             )
         )
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得所有藥局庫存統計',
         responses={
             HTTP_200_OK: InventoryCountSerializer(many=True),
@@ -129,7 +128,7 @@ class InventoryQuantityUpdateView(UpdateAPIView):
         inventory.stock_quantity += serializer.validated_data['delta']
         inventory.save()
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='Delta 更新藥局庫存數量',
         responses={
             HTTP_200_OK: InventoryCountSerializer(many=True),
@@ -143,9 +142,7 @@ class InventoryQuantityUpdateView(UpdateAPIView):
     ) -> HttpResponse:
         return super().put(request, *args, **kwargs)
 
-    @swagger_auto_schema(
-        auto_schema=None,
-    )
+    @extend_schema(exclude=True)
     def patch(
         self: Self,
         request: HttpRequest,
@@ -185,18 +182,18 @@ class InventoryBulkUpdateView(UpdateAPIView):
         )
         return Response(response_serializer.data)
 
-    @swagger_auto_schema(auto_schema=None)
+    @extend_schema(exclude=True)
     def patch(
         self: Self,
         request: HttpRequest,
         *args: tuple,
         **kwargs: dict,
     ) -> HttpResponse:
-        return super().patch(request, *args, **kwargs)
+        return super().put(request, *args, **kwargs)
 
-    @swagger_auto_schema(
-        operation_id='批次更新藥局庫存',
-        request_body=InventoryBulkUpdateSerializer(many=True),
+    @extend_schema(
+        operation_id='批次更新藥局庫存數量',
+        request=InventoryBulkUpdateSerializer(many=True),
         responses={
             HTTP_200_OK: InventoryBulkUpdateSerializer(many=True),
         },
@@ -238,11 +235,11 @@ class InventoryBulkCreateView(CreateAPIView):
             headers=headers,
         )
 
-    @swagger_auto_schema(
-        operation_id='批次新增藥局庫存',
-        request_body=InventoryBulkCreateSerializer(many=True),
+    @extend_schema(
+        operation_id='批次新增藥局庫存數量',
+        request=InventoryBulkCreateSerializer(many=True),
         responses={
-            HTTP_201_CREATED: InventoryBulkCreateSerializer(many=True),
+            HTTP_200_OK: InventoryBulkCreateSerializer(many=True),
         },
     )
     def post(
@@ -264,7 +261,7 @@ class InventoryListView(ListAPIView):
     search_fields = ('name', 'pharmacy__name')
     filter_backends = (FullTextSearchFilter,)
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得庫存列表',
         responses={
             HTTP_200_OK: InventoryListSerializer(many=True),
