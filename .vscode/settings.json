@@ -1,0 +1,5 @@
+{
+  "python.testing.pytestEnabled": true,
+  "python.testing.cwd": "${workspaceFolder}/backend/src/",
+  "python.envFile": "${workspaceFolder}/backend/.env"
+}
