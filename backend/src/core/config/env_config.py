@@ -12,7 +12,7 @@ class DatabaseSettings(BaseSettings):
 
 class SystemSettings(BaseSettings):
     SECRET_KEY: str | None = None
-    HOST: str = '127.0.0.1'
+    HOST_URL: str = 'http://localhost:8000'
     DEBUG: bool = True
     LANGUAGE_CODE: str = 'en-us'
     TIME_ZONE: str = 'Asia/Taipei'
