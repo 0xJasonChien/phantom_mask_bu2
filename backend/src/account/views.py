@@ -38,28 +38,33 @@ class UserCreateView(CreateAPIView):
     ) -> HttpResponse:
         return super().post(request, *args, **kwargs)
 
-    def perform_create(
-        self: Self,
-        serializer: UserCreateSerializer,
-    ) -> User:
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-
-        self.token_response = {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
-        return user
-
     def create(
         self: Self,
         request: HttpRequest,
         *args: tuple,
         **kwargs: dict,
-    ) -> HttpResponse:
-        response = super().create(request, *args, **kwargs)
-        response.data = self.token_response or {}
-        return response
+    ) -> Response:
+        # validate data
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # create user
+        validated_data = serializer.validated_data
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+
+        # generate tokens
+        refresh = RefreshToken.for_user(user)
+
+        # create response with token data
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
+        return Response(response_data, status=HTTP_201_CREATED)
 
 
 class UserLoginView(TokenObtainPairView):
