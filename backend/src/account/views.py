@@ -1,35 +1,36 @@
 from typing import Self
 
 from captcha.models import CaptchaStore
+from captcha.views import captcha_image
 from django.http import HttpRequest, HttpResponse
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-
-from account.apps import AccountConfig
 
 from .models import User
 from .serializers import (
     CaptchaRetrieveSerializer,
     TokenRetrieveSerializer,
     UserCreateSerializer,
+    UserLoginSerializer,
 )
 
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserCreateSerializer
+    permission_classes = ()
     queryset = User.objects.all()
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='建立使用者帳號',
+        request=UserCreateSerializer,
         responses={
             HTTP_201_CREATED: TokenRetrieveSerializer,
         },
-        tags=(AccountConfig.name,),
     )
     def post(
         self: Self,
@@ -39,39 +40,44 @@ class UserCreateView(CreateAPIView):
     ) -> HttpResponse:
         return super().post(request, *args, **kwargs)
 
-    def perform_create(
-        self: Self,
-        serializer: UserCreateSerializer,
-    ) -> User:
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-
-        self.token_response = {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
-        return user
-
     def create(
         self: Self,
         request: HttpRequest,
         *args: tuple,
         **kwargs: dict,
-    ) -> HttpResponse:
-        response = super().create(request, *args, **kwargs)
-        response.data = self.token_response or {}
-        return response
+    ) -> Response:
+        # validate data
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # create user
+        validated_data = serializer.validated_data
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+
+        # generate tokens
+        refresh = RefreshToken.for_user(user)
+
+        # create response with token data
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
+        return Response(response_data, status=HTTP_201_CREATED)
 
 
 class UserLoginView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
+    serializer_class = UserLoginSerializer
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='使用者登入',
+        request=UserLoginSerializer,
         responses={
             HTTP_200_OK: TokenRetrieveSerializer,
         },
-        tags=(AccountConfig.name,),
     )
     def post(
         self: Self,
@@ -86,12 +92,11 @@ class CaptchaHashKeyRetrieveView(RetrieveAPIView):
     permission_classes = ()
     serializer_class = CaptchaRetrieveSerializer
 
-    @swagger_auto_schema(
+    @extend_schema(
         operation_id='取得驗證碼',
         responses={
             HTTP_200_OK: CaptchaRetrieveSerializer,
         },
-        tags=(AccountConfig.name,),
     )
     def get(
         self: Self,
@@ -99,7 +104,26 @@ class CaptchaHashKeyRetrieveView(RetrieveAPIView):
         *args: tuple,
         **kwargs: dict,
     ) -> HttpResponse:
-        hash_key = CaptchaStore.generate_key()
-        serializer = self.serializer_class(data={'hash_key': hash_key})
+        hashkey = CaptchaStore.generate_key()
+        serializer = self.serializer_class(data={'hashkey': hashkey})
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=HTTP_200_OK)
+
+
+class CaptchaImageRetrieveView(APIView):
+    permission_classes = ()
+
+    @extend_schema(
+        operation_id='取得驗證碼圖形',
+        responses={
+            HTTP_200_OK: 'image/png',
+        },
+    )
+    def get(
+        self,
+        request: HttpRequest,
+        hashkey: str,
+        *args: tuple,
+        **kwargs: dict,
+    ) -> HttpResponse:
+        return captcha_image(request, hashkey, scale=2)
