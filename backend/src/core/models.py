@@ -28,11 +28,28 @@ class BaseModel(models.Model):
     @contextmanager
     def lock_query(
         cls: type[BaseModel],
-        uuid_list: UUID | list[UUID],
+        uuid_list: list[UUID],
+        **kwargs: dict,  # for extra custom filters
     ) -> Generator[QuerySet[BaseModel], None, None]:
         try:
             with transaction.atomic():
-                queryset = cls.objects.select_for_update().filter(uuid__in=uuid_list)
+                queryset = cls.objects.select_for_update().filter(
+                    uuid__in=uuid_list,
+                    **kwargs,
+                )
+                yield queryset
+        except Exception as e:  # noqa: TRY203
+            raise e  # noqa: TRY201
+
+    @classmethod
+    @contextmanager
+    def lock_instance(
+        cls: type[BaseModel],
+        uuid: UUID,
+    ) -> Generator[QuerySet[BaseModel], None, None]:
+        try:
+            with transaction.atomic():
+                queryset = cls.objects.select_for_update().get(uuid=uuid)
                 yield queryset
         except Exception as e:  # noqa: TRY203
             raise e  # noqa: TRY201

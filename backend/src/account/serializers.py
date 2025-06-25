@@ -22,7 +22,7 @@ class TokenRetrieveSerializer(serializers.Serializer):
 
 
 class CaptchaRetrieveSerializer(serializers.Serializer):
-    hash_key = serializers.CharField()
+    hashkey = serializers.CharField()
 
 
 class UserLoginSerializer(TokenObtainPairSerializer):
