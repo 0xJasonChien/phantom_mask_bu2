@@ -1,8 +1,10 @@
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import User
+from .validators import CaptchaValidator
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -21,3 +23,16 @@ class TokenRetrieveSerializer(serializers.Serializer):
 
 class CaptchaRetrieveSerializer(serializers.Serializer):
     hash_key = serializers.CharField()
+
+
+class UserLoginSerializer(TokenObtainPairSerializer):
+    captcha = serializers.CharField()
+    captcha_hash_key = serializers.CharField()
+
+    def __init__(
+        self: Self,
+        *args: tuple,
+        **kwargs: dict,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.validators.append(CaptchaValidator())

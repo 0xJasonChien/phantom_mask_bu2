@@ -104,6 +104,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
 }
 
 # Simple JWT settings
@@ -119,6 +120,10 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Phantom Mask API',
     'DESCRIPTION': 'API documentation',
     'VERSION': '1.0.0',
+    'POSTPROCESSING_HOOKS': [
+        'drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields',
+    ],
+    'SERVE_AUTHENTICATION': [],  # remove default authentication
 }
 
 # Database
