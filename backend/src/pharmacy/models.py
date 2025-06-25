@@ -120,7 +120,13 @@ class Inventory(BaseModel):
             try:
                 cls.objects.bulk_update(
                     to_update_inventory,
-                    fields=['name', 'color', 'count_per_pack'],
+                    fields=[
+                        'name',
+                        'color',
+                        'price',
+                        'count_per_pack',
+                        'stock_quantity',
+                    ],
                     batch_size=settings.BATCH_SIZE,
                 )
             except IntegrityError as e:
