@@ -34,9 +34,16 @@ jobs:
 
       - name: Run Unit tests
         run: |
-          cd backend
-          uv run pytest --cov=src --cov-report=xml
+          cd backend/src
+          uv run pytest -vv --cov=core --cov-report=xml
           cd ..
+        env:
+          SECRET_KEY: unsafe-secret-key-for-ci-workflow
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
