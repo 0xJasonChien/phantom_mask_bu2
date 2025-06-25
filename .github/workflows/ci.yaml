@@ -35,7 +35,7 @@ jobs:
       - name: Run Unit tests
         run: |
           cd backend/src
-          uv run pytest -vv --cov=core --cov-report=xml
+          uv run pytest -vv --cov-report=xml
           cd ..
         env:
           SECRET_KEY: unsafe-secret-key-for-ci-workflow
