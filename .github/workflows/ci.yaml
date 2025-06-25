@@ -5,29 +5,42 @@ on:
   workflow_dispatch:
 
 jobs:
-  python-linter:
+  python-linter-and-tests:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: "latest"
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
 
-    - name: Sync uv environment
-      run: |
-        cd backend
-        uv sync
-        cd ..
+      - name: Sync uv environment
+        run: |
+          cd backend
+          uv sync
+          cd ..
 
-    - name: Run pre-commit hooks with uv
-      uses: pre-commit/action@v3.0.1
-      with:
-        extra_args: "--all-files"
+      - name: Run pre-commit hooks with uv
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: "--all-files"
+
+      - name: Run Unit tests
+        run: |
+          cd backend
+          uv run pytest --cov=src --cov-report=xml
+          cd ..
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
