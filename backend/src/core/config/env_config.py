@@ -5,14 +5,14 @@ class DatabaseSettings(BaseSettings):
     DB_ENGINE: str = 'django.db.backends.postgresql'
     DB_USERNAME: str = 'postgres'
     DB_PASSWORD: str = ''
-    DB_HOST: str = 'localhost'
+    DB_HOST: str = 'db'
     DB_PORT: int = 5432
-    DB_NAME: str = 'phantom_mask_db_1'
+    DB_NAME: str = 'phantom_mask_db'
 
 
 class SystemSettings(BaseSettings):
     SECRET_KEY: str | None = None
-    HOST_URL: str = 'http://localhost:8000'
+    HOST: str = '127.0.0.1'
     DEBUG: bool = True
     LANGUAGE_CODE: str = 'en-us'
     TIME_ZONE: str = 'Asia/Taipei'

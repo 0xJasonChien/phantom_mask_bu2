@@ -56,7 +56,7 @@ class Command(BaseCommand):
 
     def handle(self: Self, *args: tuple, **options: dict) -> None:
         # load the data from json file
-        members_file_path = BASE_DIR.parent.parent / 'data' / 'users.json'
+        members_file_path = BASE_DIR / 'data' / 'users.json'
         with members_file_path.open('r', encoding='utf-8') as file:
             data = json.load(file)
 

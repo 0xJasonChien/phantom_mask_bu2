@@ -63,7 +63,7 @@ class Command(BaseCommand):
 
     def handle(self: Self, *args: tuple, **options: dict) -> None:
         # load the data from json file
-        pharmacies_file_path = BASE_DIR.parent.parent / 'data' / 'pharmacies.json'
+        pharmacies_file_path = BASE_DIR / 'data' / 'pharmacies.json'
         with pharmacies_file_path.open('r', encoding='utf-8') as file:
             data = json.load(file)
 
