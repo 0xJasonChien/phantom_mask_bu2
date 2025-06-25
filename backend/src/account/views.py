@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -26,6 +27,7 @@ class UserCreateView(CreateAPIView):
 
     @extend_schema(
         operation_id='建立使用者帳號',
+        request=UserCreateSerializer,
         responses={
             HTTP_201_CREATED: TokenRetrieveSerializer,
         },
@@ -72,6 +74,7 @@ class UserLoginView(TokenObtainPairView):
 
     @extend_schema(
         operation_id='使用者登入',
+        request=UserLoginSerializer,
         responses={
             HTTP_200_OK: TokenRetrieveSerializer,
         },
@@ -101,23 +104,26 @@ class CaptchaHashKeyRetrieveView(RetrieveAPIView):
         *args: tuple,
         **kwargs: dict,
     ) -> HttpResponse:
-        hash_key = CaptchaStore.generate_key()
-        serializer = self.serializer_class(data={'hash_key': hash_key})
+        hashkey = CaptchaStore.generate_key()
+        serializer = self.serializer_class(data={'hashkey': hashkey})
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=HTTP_200_OK)
 
 
-class CaptchaImageRetrieveView(RetrieveAPIView):
+class CaptchaImageRetrieveView(APIView):
     permission_classes = ()
 
     @extend_schema(
         operation_id='取得驗證碼圖形',
+        responses={
+            HTTP_200_OK: 'image/png',
+        },
     )
     def get(
-        self: Self,
+        self,
         request: HttpRequest,
+        hashkey: str,
         *args: tuple,
         **kwargs: dict,
     ) -> HttpResponse:
-        hash_key = self.kwargs['hash_key']
-        return captcha_image(request, hash_key, scale=2)
+        return captcha_image(request, hashkey, scale=2)

@@ -10,6 +10,6 @@ from .views import (
 urlpatterns = [
     path('register/', UserCreateView.as_view()),
     path('login/', UserLoginView.as_view()),
-    re_path(r'captcha/image/(?P<hash_key>\w+)/$', CaptchaImageRetrieveView.as_view()),
+    re_path(r'captcha/image/(?P<hashkey>\w+)/$', CaptchaImageRetrieveView.as_view()),
     path('captcha/', CaptchaHashKeyRetrieveView.as_view()),
 ]
