@@ -6,7 +6,7 @@ from typing import Self
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from core.config.base import BASE_DIR
+from core.config.env_config import BASE_DIR
 from member.models import Member, PurchaseHistory
 from pharmacy.models import Inventory, Pharmacy
 

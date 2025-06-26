@@ -4,7 +4,7 @@ from typing import Self
 
 from django.core.management.base import BaseCommand
 
-from core.config.base import BASE_DIR
+from core.config.env_config import BASE_DIR
 from pharmacy.models import Inventory, OpeningHour, Pharmacy
 
 

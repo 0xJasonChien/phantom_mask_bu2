@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
 class DatabaseSettings(BaseSettings):
@@ -23,7 +27,10 @@ class SystemSettings(BaseSettings):
 
 
 class Settings(SystemSettings, DatabaseSettings):
-    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+    model_config = SettingsConfigDict(
+        env_file=(BASE_DIR / 'src' / '.env'),
+        extra='ignore',
+    )
 
 
 settings = Settings()
