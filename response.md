@@ -17,7 +17,7 @@
   * Implemented at  `/pharmacy/<uuid>/inventory/bulk-create/` API for create.
 * [ ] Search for pharmacies or masks by name and rank the results by relevance to the search term.
   * Implemented at `/pharmacy/inventory/` API.
-  
+
 <br>
 
 ## API Document
@@ -65,7 +65,7 @@ I use Docker for deployment. please follow the setp to start up on  local. <br>
    # please generate SECRET_KEY from https://djecrety.ir/
    SECRET_KEY=
    DEBUG=True
-   
+
    # DB settings
    DB_USERNAME=phantom_mask
    DB_PASSWORD=phantom_mask
