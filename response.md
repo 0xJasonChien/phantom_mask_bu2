@@ -1,22 +1,23 @@
 # Response
 ## Requirement Completion Rate
 * [ ] List pharmacies, optionally filtered by specific time and/or day of the week.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/` API.
 * [ ] List all masks sold by a given pharmacy with an option to sort by name or price.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/<uuid>/inventory/` API.
 * [ ] List all pharmacies that offer a number of mask products within a given price range, where the count is above, below, or between given thresholds.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/` API.
 * [ ] Show the top N users who spent the most on masks during a specific date range.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/inventory/count/` API.
 * [ ] Process a purchase where a user buys masks from multiple pharmacies at once.
-  *  Implemented at xxx API.
+  *  Implemented at `/member/<uuid>/create-purchase-history/` API.
 * [ ] Update the stock quantity of an existing mask product by increasing or decreasing it.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/inventory/<uuid>/update-quantity/` API.
 * [ ] Create or update multiple mask products for a pharmacy at once, including name, price, and stock quantity.
-  * Implemented at xxx API.
+  * Implemented at `/pharmacy/<uuid>/inventory/bulk-update/` API for update.
+  * Implemented at  `/pharmacy/<uuid>/inventory/bulk-create/` API for create.
 * [ ] Search for pharmacies or masks by name and rank the results by relevance to the search term.
-  * Implemented at xxx API.
-  *
+  * Implemented at `/pharmacy/inventory/` API.
+  
 <br>
 
 ## API Document
@@ -73,7 +74,7 @@ I use Docker for deployment. please follow the setp to start up on  local. <br>
    DB_HOST=db
    ```
    > Please get a sercret key from [https://djecrety.ir/](https://djecrety.ir/) for SECRET_KEY value
-   >  set the DEBUG to True, so that the swagger page is accessible in [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
+   >  set the DEBUG to True, so that the API Document page is accessible in [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
 5. Build and start the container
 
     ```
