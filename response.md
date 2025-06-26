@@ -43,21 +43,42 @@ I have written the unit tests, and the current test coverage is:
 <br>
 ![coverage chart](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/sunburst.svg?token=SYRLPCTURX)
 
-p.s. you can also trigger the [CI workflow](https://github.com/0xJasonChien/phantom_mask_bu2/actions/workflows/ci.yaml) to refresh the coverage.
+> p.s. you can also trigger the [CI workflow](https://github.com/0xJasonChien/phantom_mask_bu2/actions/workflows/ci.yaml) to refresh the coverage.
 
 <br>
 
 ## Deployment
-I use Docker for deployment. please follow the setp to start up on  local.
+I use Docker for deployment. please follow the setp to start up on  local. <br>
 
-1. Copy the `.env.example` and rename to `.env`
-2. run the following command to move to `phantom_mask_bu2/backend/src` to build and start the container
+1. move to working directory
+   ``` bash
+   cd phantom_mask_bu2/backend/
+   ```
+3. Copy the `.env.example` and rename to `.env`
+   ``` bash
+   mv .env.example .env
+   ```
+4. edit the `.env` file
+   ``` .env
+   # django settings
+   # please generate SECRET_KEY from https://djecrety.ir/
+   SECRET_KEY=
+   DEBUG=True
+   
+   # DB settings
+   DB_USERNAME=phantom_mask
+   DB_PASSWORD=phantom_mask
+   DB_NAME=phantom_mask_db
+   DB_PORT=5432
+   DB_HOST=db
+   ```
+   > Please get a sercret key from [https://djecrety.ir/](https://djecrety.ir/) for SECRET_KEY value
+5. Build and start the container
+
     ```
-    mv .env.example .env
-    docker compose build
-    docker compose up
+    docker compose up --build
     ```
-    when starting the container, the initial data will be loaded into DB, you don't have to run any command
+    > p.s. when starting the container, the initial data will be loaded into DB, you don't have to run any command
 
 <br>
 
