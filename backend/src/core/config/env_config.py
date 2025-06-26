@@ -28,7 +28,7 @@ class SystemSettings(BaseSettings):
 
 class Settings(SystemSettings, DatabaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(BASE_DIR / 'src' / '.env'),
+        env_file='.env',
         extra='ignore',
     )
 
