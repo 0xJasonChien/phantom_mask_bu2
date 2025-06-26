@@ -25,6 +25,17 @@ The Swagger documentation was in PDF format generated using the `drf_spectacular
  You can explore and test the API after deployment via Docker. <br>
 [ View the Swagger Documentation (PDF) ](https://github.com/user-attachments/files/20922153/Phantom.Mask.API.pdf)
 
+### Preprocess before testing the api on swagger after the docker container is started up
+> Be sure you have start up the container before starting the follow steps
+
+1. Register an account for the system first
+   <img width="1170" alt="Screenshot 2025-06-26 at 6 55 12 PM" src="https://github.com/user-attachments/assets/d0d028b8-dd4a-43a1-ae0a-65f0207c1a07" />
+2. it will reponse a access key & refresh key for you, and go to the page fill in the access key
+   <img width="1146" alt="Screenshot 2025-06-26 at 6 56 09 PM" src="https://github.com/user-attachments/assets/e4f4b8b6-64a3-4aad-9928-fb715afc2dca" />
+
+   <img width="939" alt="Screenshot 2025-06-26 at 6 57 13 PM" src="https://github.com/user-attachments/assets/0c9635c6-46ea-4fda-8877-a012df0f77d5" />
+3. after registered, you are ready to test
+
 <br>
 
 ## Import Data Commands
