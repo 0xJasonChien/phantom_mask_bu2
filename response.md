@@ -44,7 +44,7 @@ I have written two commands for loading the initial data:
 uv run python manage.py load_pharmacies
 uv run python manage.py load_members
 ```
-However, you don't need to run them manually when using Docker, the entrypoint script will handle this.
+> However, you don't need to run them manually when using Docker, the entrypoint script will handle this.
 
 <br>
 
