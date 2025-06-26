@@ -83,4 +83,64 @@ I use Docker for deployment. please follow the setp to start up on  local. <br>
 <br>
 
 ## Additional Data
-> If you have an ERD or any other materials that could help with understanding the system, please include them here.
+```mermaid
+erDiagram
+
+    User {
+        UUID uuid PK
+        string email
+        string username
+    }
+
+    Pharmacy {
+        UUID uuid PK
+        string name
+        float cash_balance
+    }
+
+    OpeningHour {
+        UUID uuid PK
+        string weekday
+        time start_time
+        time end_time
+    }
+
+    Inventory {
+        UUID uuid PK
+        string name
+        string color
+        int count_per_pack
+        float price
+        int stock_quantity
+    }
+
+    InventorySnapshot {
+        UUID uuid PK
+        string pharmacy_name
+        string inventory_name
+        string color
+        int count_per_pack
+        float price
+    }
+
+    Member {
+        UUID uuid PK
+        string name
+        float cash_balance
+    }
+
+    PurchaseHistory {
+        UUID uuid PK
+        float amount
+        int quantity
+        datetime purchase_date
+    }
+
+    OpeningHour }o--|| Pharmacy : belongs_to
+    Inventory }o--|| Pharmacy : belongs_to
+    InventorySnapshot ||--|| Pharmacy : nullable_fk
+    InventorySnapshot ||--|| Inventory : nullable_fk
+
+    PurchaseHistory }o--|| Member : belongs_to
+    PurchaseHistory ||--|| InventorySnapshot : uses_snapshot
+```
