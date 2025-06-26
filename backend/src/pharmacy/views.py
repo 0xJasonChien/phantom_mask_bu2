@@ -53,7 +53,7 @@ class InventoryPerPharmacyListView(ListAPIView):
     List all masks sold by a given pharmacy with an option to sort by name or price.
     """
 
-    queryset = Inventory.objects.all()
+    queryset = Inventory.objects.all().select_related('pharmacy')
     serializer_class = InventoryPerPharmacyListSerializer
     filterset_fields: ClassVar = {
         'name': ['in', 'exact'],
@@ -61,7 +61,7 @@ class InventoryPerPharmacyListView(ListAPIView):
     }
 
     def get_queryset(self: Self) -> QuerySet:
-        return super().get_queryset().filter(pharmacy_id=self.kwargs['uuid'])
+        return super().get_queryset().filter(pharmacy__uuid=self.kwargs['uuid'])
 
     @extend_schema(
         operation_id='取得藥局販售的口罩列表',

@@ -1,4 +1,4 @@
-from typing import Self
+from typing import ClassVar, Self
 
 from django.db.models import F, QuerySet, Sum
 from django.http import HttpRequest, HttpResponse
@@ -62,6 +62,9 @@ class PurchaseHistoryCreateView(CreateAPIView):
 class PurchaseRankingListView(ListAPIView):
     queryset = PurchaseHistory.objects.all()
     serializer_class = PurchaseRankingSerializer
+    filterset_fields: ClassVar = {
+        'purchase_date': ['gte', 'lte', 'gt', 'lt', 'exact'],
+    }
 
     def get_queryset(self: Self) -> QuerySet:
         top = self.request.query_params.get('top')

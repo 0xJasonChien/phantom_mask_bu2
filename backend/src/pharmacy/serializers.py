@@ -29,7 +29,7 @@ class OpeningHourListSerializer(serializers.ModelSerializer):
 class InventoryPerPharmacyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventory
-        fields = ('uuid', 'name', 'color', 'count_per_pack')
+        fields = ('uuid', 'name', 'color', 'count_per_pack', 'price', 'stock_quantity')
         read_only_fields = ('uuid',)
 
 
