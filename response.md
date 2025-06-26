@@ -33,7 +33,7 @@ $ rake import_data:users[PATH_TO_FILE]
 
 ## Test Coverage Report
 I wrote down the xx unit tests for the APIs I built. Please check the test coverage report here.
-
+[![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
 You can run the test script by using the command below:
 
 ```bash
