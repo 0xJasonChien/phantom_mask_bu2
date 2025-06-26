@@ -3,6 +3,9 @@ name: ci-workflow
 on:
   pull_request:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   python-linter-and-tests:
