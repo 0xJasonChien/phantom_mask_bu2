@@ -1,6 +1,4 @@
 # Response
-> The Current content is an **example template**; please edit it to fit your style and content.
-
 ## Requirement Completion Rate
 * [ ] List pharmacies, optionally filtered by specific time and/or day of the week.
   * Implemented at xxx API.
@@ -18,72 +16,48 @@
   * Implemented at xxx API.
 * [ ] Search for pharmacies or masks by name and rank the results by relevance to the search term.
   * Implemented at xxx API.
+  * 
+<br>
 
 ## API Document
-> * Please describe how to use the API in the API documentation.
-> * You can edit by any format (e.g., Markdown or OpenAPI) or free tools (e.g., [hackMD](https://hackmd.io/), [postman](https://www.postman.com/), [google docs](https://docs.google.com/document/u/0/), or  [swagger](https://swagger.io/specification/)).
+The Swagger documentation was in PDF format generated using the `drf_spectacular` library. <br>
+ You can explore and test the API after deployment via Docker. <br>
+[ View the Swagger Documentation (PDF) ](https://github.com/user-attachments/files/20922153/Phantom.Mask.API.pdf)
+
+<br>
 
 ## Import Data Commands
-Please run these two script commands to migrate the data into the database.
-
+I have written two commands for loading the initial data:
 ```bash
-$ rake import_data:pharmacies[PATH_TO_FILE]
-$ rake import_data:users[PATH_TO_FILE]
+uv run python manage.py load_pharmacies
+uv run python manage.py load_members
 ```
+However, you don't need to run them manually when using Docker, the entrypoint script will handle this.
+
+<br>
 
 ## Test Coverage Report
-I wrote down the xx unit tests for the APIs I built. Please check the test coverage report here.
-You can run the test script by using the command below:
-[![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
+I have wrote the unite test, and the coverage is  [![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
+
 ![coverage chart](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/sunburst.svg?token=SYRLPCTURX)
 
+p.s. you can trigger the [CI workflow](https://github.com/0xJasonChien/phantom_mask_bu2/actions/workflows/ci.yaml) to refresh the coverage
 
-```bash
-bundle exec rspec spec
-```
+<br>
 
 ## Deployment
-* To deploy the project locally using Docker, run the following commands:
+I use Docker for deployment. please follow the setp to deploy locally.
 
-```bash
-# Build the Docker image with development environment
-$ docker build --build-arg ENV=development -t my-project:1.0.0 .
+1. Copy the `.env.example` and rename to `.env`
+2. run the following command to move to `phantom_mask_bu2/backend/src` to build and start the container
+    ```
+    mv .env.example .env
+    docker compose build
+    docker compose up
+    ```
+    when starting the container, the initial data will be loaded into DB, you don't have to run any command
 
-# Start the service using docker-compose
-$ docker-compose up -d
-
-# Access the container to run data import tasks
-$ docker exec -it my-project bash
-$ rake import_data:pharmacies[PATH_TO_FILE]
-$ rake import_data:user[PATH_TO_FILE]
-```
-
-* If you do not use Docker, please provide detailed instructions including the following:
-1. Environment Requirements
-2. Build & Run Steps
-
-```bash
-# Install dependencies
-$ bundle install
-
-# Set up the database (sample config/database.yml may be provided)
-$ rails db:setup
-
-# Import data
-$ rake import_data:pharmacies[PATH_TO_FILE]
-$ rake import_data:user[PATH_TO_FILE]
-
-# Start the server
-$ rails server
-```
-
-> * If any environment variables are required, please include instructions (e.g., create a .env file).
-> * If the project relies on special permissions, external services, or third-party APIs, be sure to include setup and initialization steps.
-
-* If you have deployed the demo site, please provid the demo site url.
-> The demo site is ready on my AWS demo site; you can try any APIs on this demo site.
-
-**This ensures others can deploy the project successfully, whether or not they are using Docker.**
+<br>
 
 ## Additional Data
 > If you have an ERD or any other materials that could help with understanding the system, please include them here.
