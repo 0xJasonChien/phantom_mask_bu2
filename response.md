@@ -37,16 +37,18 @@ However, you don't need to run them manually when using Docker, the entrypoint s
 <br>
 
 ## Test Coverage Report
-I have wrote the unite test, and the coverage is  [![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
-
+I have written the unit tests, and the current test coverage is:
+<br><br>
+[![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
+<br>
 ![coverage chart](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/sunburst.svg?token=SYRLPCTURX)
 
-p.s. you can trigger the [CI workflow](https://github.com/0xJasonChien/phantom_mask_bu2/actions/workflows/ci.yaml) to refresh the coverage
+p.s. you can also trigger the [CI workflow](https://github.com/0xJasonChien/phantom_mask_bu2/actions/workflows/ci.yaml) to refresh the coverage.
 
 <br>
 
 ## Deployment
-I use Docker for deployment. please follow the setp to deploy locally.
+I use Docker for deployment. please follow the setp to start up on  local.
 
 1. Copy the `.env.example` and rename to `.env`
 2. run the following command to move to `phantom_mask_bu2/backend/src` to build and start the container
