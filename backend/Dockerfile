@@ -11,11 +11,11 @@ RUN mkdir /code && \
 USER phantom-mask
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /home/phantom-mask/
+WORKDIR /home/phantom-mask/src/
 COPY uv.lock pyproject.toml ./
 RUN uv sync
 
-COPY --chown=phantom-mask:phantom-mask ./src/ .
-COPY --chown=phantom-mask:phantom-mask ./data ./data
+COPY --chown=phantom-mask:phantom-mask ./src/ ./
+COPY --chown=phantom-mask:phantom-mask ./data /home/phantom-mask/data
 
-CMD ["sh", "./backend-entrypoint.sh"]
+CMD ["sh", "backend-entrypoint.sh"]
