@@ -3,7 +3,7 @@ services:
   backend:
     build: .
     env_file:
-      - .env
+      - src/.env
     depends_on:
       - db
 
@@ -11,7 +11,7 @@ services:
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file: .env
+    env_file: src/.env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
