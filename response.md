@@ -35,6 +35,10 @@ $ rake import_data:users[PATH_TO_FILE]
 I wrote down the xx unit tests for the APIs I built. Please check the test coverage report here.
 [![codecov](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/branch/main/graph/badge.svg?token=SYRLPCTURX)](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2)
 You can run the test script by using the command below:
+![Coverage Report](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/sunburst.svg?token=SYRLPCTURX)
+![Coverage Report](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/tree.svg?token=SYRLPCTURX)
+![Coverage Report]([https://example.com/path/to/your/graph.svg](https://codecov.io/gh/0xJasonChien/phantom_mask_bu2/graphs/icicle.svg?token=SYRLPCTURX))
+
 
 ```bash
 bundle exec rspec spec
