@@ -1,22 +1,33 @@
 # Response
-## Requirement Completion Rate
+## Brief Explanation of each API
 * [ ] List pharmacies, optionally filtered by specific time and/or day of the week.
   * Implemented at `/pharmacy/` API.
+  * with using `startTime`, `startTime_Gte`, `weekday`, `endTime_Lte`, `endTime` you can construct the filter of time and weekday
+   <br>
 * [ ] List all masks sold by a given pharmacy with an option to sort by name or price.
   * Implemented at `/pharmacy/<uuid>/inventory/` API.
+  * You can get the result with filling up the uuid of pharmacy and filter by field like `price`, `price_Gt`, `price_Gte`, `price_Lt`, `price_Lte`
+   <br>
 * [ ] List all pharmacies that offer a number of mask products within a given price range, where the count is above, below, or between given thresholds.
-  * Implemented at `/pharmacy/` API.
-* [ ] Show the top N users who spent the most on masks during a specific date range.
   * Implemented at `/pharmacy/inventory/count/` API.
+   <br>
+* [ ] Show the top N users who spent the most on masks during a specific date range.
+  * Implemented at `/member/purchase-ranking/` API.
+  * with filling up the `top` argument and `purchaseDate` related field
+   <br>
 * [ ] Process a purchase where a user buys masks from multiple pharmacies at once.
   *  Implemented at `/member/<uuid>/create-purchase-history/` API.
+   <br>
 * [ ] Update the stock quantity of an existing mask product by increasing or decreasing it.
   * Implemented at `/pharmacy/inventory/<uuid>/update-quantity/` API.
+   <br>
 * [ ] Create or update multiple mask products for a pharmacy at once, including name, price, and stock quantity.
   * Implemented at `/pharmacy/<uuid>/inventory/bulk-update/` API for update.
   * Implemented at  `/pharmacy/<uuid>/inventory/bulk-create/` API for create.
+   <br>
 * [ ] Search for pharmacies or masks by name and rank the results by relevance to the search term.
   * Implemented at `/pharmacy/inventory/` API.
+  * by filling up the search term, you can get the result
 
 <br>
 
