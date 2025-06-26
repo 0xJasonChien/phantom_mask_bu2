@@ -16,7 +16,7 @@
   * Implemented at xxx API.
 * [ ] Search for pharmacies or masks by name and rank the results by relevance to the search term.
   * Implemented at xxx API.
-  * 
+  *
 <br>
 
 ## API Document
