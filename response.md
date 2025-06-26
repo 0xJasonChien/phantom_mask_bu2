@@ -73,6 +73,7 @@ I use Docker for deployment. please follow the setp to start up on  local. <br>
    DB_HOST=db
    ```
    > Please get a sercret key from [https://djecrety.ir/](https://djecrety.ir/) for SECRET_KEY value
+   >  set the DEBUG to True, so that the swagger page is accessible in [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
 5. Build and start the container
 
     ```
