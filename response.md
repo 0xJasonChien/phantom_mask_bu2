@@ -104,50 +104,70 @@ erDiagram
         UUID uuid PK
         string email
         string username
+        datetime created_at
+        datetime updated_at
     }
 
     Pharmacy {
         UUID uuid PK
         string name
         float cash_balance
+        datetime created_at
+        datetime updated_at
     }
 
     OpeningHour {
         UUID uuid PK
+        UUID pharmacy FK
         string weekday
         time start_time
         time end_time
+        datetime created_at
+        datetime updated_at
     }
 
     Inventory {
         UUID uuid PK
+        UUID pharmacy FK
         string name
         string color
         int count_per_pack
         float price
         int stock_quantity
+        datetime created_at
+        datetime updated_at
     }
 
     InventorySnapshot {
         UUID uuid PK
+        UUID pharmacy FK
+        UUID inventory FK
         string pharmacy_name
         string inventory_name
         string color
         int count_per_pack
         float price
+        datetime created_at
+        datetime updated_at
     }
 
     Member {
         UUID uuid PK
         string name
         float cash_balance
+        datetime created_at
+        datetime updated_at
     }
 
     PurchaseHistory {
         UUID uuid PK
+        UUID member FK
+        UUID inventory FK
         float amount
         int quantity
         datetime purchase_date
+        datetime created_at
+        datetime updated_at
     }
 
     OpeningHour }o--|| Pharmacy : belongs_to
@@ -156,5 +176,5 @@ erDiagram
     InventorySnapshot ||--|| Inventory : nullable_fk
 
     PurchaseHistory }o--|| Member : belongs_to
-    PurchaseHistory ||--|| InventorySnapshot : uses_snapshot
+    PurchaseHistory ||--|| InventorySnapshot : uses_snapshot_for_logging
 ```
